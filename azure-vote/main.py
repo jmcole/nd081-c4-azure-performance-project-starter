@@ -139,16 +139,12 @@ def index():
 
             properties = {'custom_dimensions': {'Cats Vote': vote1}}
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
-            print(vote1+' Vote 1')
-            print(vote2+' Vote 2')
-            print(vote+' vote)')
 
+            if vote == 'Cats':
+                logger.info('Cats Vote!', extra=properties)
 
-            # use logger object to log cat vote
-            logger.info('Cats Vote!', extra=properties)
-            # use logger object to log dog vote
-            logger.info('Dogs Vote!', extra=properties)  
-
+            if vote == 'Dogs':
+                logger.info('Dogs Vote!', extra=properties)  
 
             # Return results
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
