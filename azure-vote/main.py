@@ -22,42 +22,49 @@ from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
+
+connection_string='InstrumentationKey=412d8348-d875-483f-870d-a3929c92a1ae'
+
 # For metrics
 stats = stats_module.stats
 view_manager = stats.view_manager
+
 # Logging
 config_integration.trace_integrations(['logging'])
 config_integration.trace_integrations(['requests'])
-# Standard Logging
 logger = logging.getLogger(__name__)
-handler = AzureLogHandler(connection_string='InstrumentationKey=412d8348-d875-483f-870d-a3929c92a1ae')
+
+handler = AzureLogHandler(connection_string=connection_string)
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
-# Logging custom Events 
-logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=412d8348-d875-483f-870d-a3929c92a1ae'))
-# Set the logging level
+
+logger.addHandler(AzureEventHandler(connection_string=connection_string))
 logger.setLevel(logging.INFO)
 
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(
-enable_standard_metrics=True,
-connection_string='InstrumentationKey=412d8348-d875-483f-870d-a3929c92a1ae')
+  enable_standard_metrics=True,
+  connection_string=connection_string)
+
 view_manager.register_exporter(exporter)
 
 # Tracing
 tracer = Tracer(
- exporter=AzureExporter(
-     connection_string='InstrumentationKey=412d8348-d875-483f-870d-a3929c92a1ae'),
- sampler=ProbabilitySampler(1.0),
+    exporter=AzureExporter(
+        connection_string=connection_string),
+    sampler=ProbabilitySampler(1.0),
 )
 app = Flask(__name__)
 
 # Requests
 middleware = FlaskMiddleware(
- app,
- exporter=AzureExporter(connection_string="InstrumentationKey=412d8348-d875-483f-870d-a3929c92a1ae"),
- sampler=ProbabilitySampler(rate=1.0)
+    app,
+    exporter=AzureExporter(connection_string=connection_string),
+    sampler=ProbabilitySampler(rate=1.0)
 )
+
+
+
 
 # Load configurations from environment or config file
 app.config.from_pyfile('config_file.cfg')
@@ -116,16 +123,14 @@ def index():
             r.set(button1,0)
             r.set(button2,0)
             vote1 = r.get(button1).decode('utf-8')
-            #properties = {'custom_dimensions': {'Cats Vote': vote1}}
+            properties = {'custom_dimensions': {'Cats Vote': vote1}}
             #use logger object to log cat vote
-            #logger.info('Cats Vote', extra=properties)
-            #logger.info('Cats Vote')
+            logger.info('Cats Vote', extra=properties)
 
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             #use logger object to log dog vote
-            #logger.info('Dogs Vote')
-            #logger.info('Dogs Vote', extra=properties)
+            logger.info('Dogs Vote', extra=properties)
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
 
         else:
@@ -136,14 +141,14 @@ def index():
 
             # Get current values
             vote1 = r.get(button1).decode('utf-8')
-            #properties = {'custom_dimensions': {'Cats Vote': vote1}}
+            properties = {'custom_dimensions': {'Cats Vote': vote1}}
             # use logger object to log cat vote
-            logger.info('Cats Vote')
+            logger.info('Cats Vote', extra=properties)
 
             vote2 = r.get(button2).decode('utf-8')
-            #properties = {'custom_dimensions': {'Dogs Vote': vote2}}
+            properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             # use logger object to log dog vote
-            logger.info('Dogs Vote')  
+            logger.info('Dogs Vote', extra=properties)  
 
 
             # Return results
