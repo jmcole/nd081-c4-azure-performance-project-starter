@@ -106,7 +106,6 @@ def index():
         # use tracer object to trace cat vote
         tracer.span(name="Cats Vote")
 
-
         vote2 = r.get(button2).decode('utf-8')
 
         # use tracer object to trace dog vote
@@ -125,12 +124,12 @@ def index():
             vote1 = r.get(button1).decode('utf-8')
             properties = {'custom_dimensions': {'Cats Vote': vote1}}
             #use logger object to log cat vote
-            logger.info('Cats Vote', extra=properties)
+            logger.info('Cats Vote!', extra=properties)
 
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             #use logger object to log dog vote
-            logger.info('Dogs Vote', extra=properties)
+            logger.info('Dogs Vote!', extra=properties)
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
 
         else:
@@ -141,14 +140,15 @@ def index():
 
             # Get current values
             vote1 = r.get(button1).decode('utf-8')
-            properties = {'custom_dimensions': {'Cats Vote': vote1}}
-            # use logger object to log cat vote
-            logger.info('Cats Vote', extra=properties)
-
             vote2 = r.get(button2).decode('utf-8')
+
+            properties = {'custom_dimensions': {'Cats Vote': vote1}}
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
+            
+            # use logger object to log cat vote
+            logger.info('Cats Vote!', extra=properties)
             # use logger object to log dog vote
-            logger.info('Dogs Vote', extra=properties)  
+            logger.info('Dogs Vote!', extra=properties)  
 
 
             # Return results
