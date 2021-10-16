@@ -125,13 +125,15 @@ def index():
             vote = request.form['vote']
             r.incr(vote,1)
 
-            vote1 = r.get(button1).decode('utf-8')
-            properties = {'custom_dimensions': {'Cats Vote': vote1}}
-            logger.info('Cats Vote', extra=properties)
+            event = vote + ' Vote'
 
+            properties = {'custom_dimensions': {'Cats Vote': event}}
+            # TODO: use logger object to log cat vote
+            logger.info(event, extra=properties)
+
+            vote1 = r.get(button1).decode('utf-8')
             vote2 = r.get(button2).decode('utf-8')
-            properties = {'custom_dimensions': {'Dogs Vote': vote2}}
-            logger.info('Dogs Vote', extra=properties)
+
 
             # Return results
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
