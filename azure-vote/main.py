@@ -125,7 +125,7 @@ def index():
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             #use logger object to log dog vote
-            if vote1 > 0:
+            if vote1 == 'Cats':
                 logger.info('Cat Vote', extra=properties)
             else:
                 logger.info('Dog Vote', extra=properties)
