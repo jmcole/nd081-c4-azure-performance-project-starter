@@ -126,11 +126,11 @@ def index():
             r.incr(vote,1)
 
             vote1 = r.get(button1).decode('utf-8')
-            properties = {'custom_dimensions': {'Cats Vote': vote}}
+            properties = {'custom_dimensions': {'Cats Vote': vote1}}
             logger.info('Cats Vote', extra=properties)
 
             vote2 = r.get(button2).decode('utf-8')
-            properties = {'custom_dimensions': {'Dogs Vote': vote}}
+            properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             logger.info('Dogs Vote', extra=properties)
 
             # Return results
