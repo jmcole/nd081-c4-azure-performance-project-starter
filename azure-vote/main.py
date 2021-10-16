@@ -130,14 +130,19 @@ def index():
 
             # Insert vote result into DB
             vote = request.form['vote']
-            votes = r.incr(vote, 1)
-            # log current vote
-            properties = {'custom_dimensions': {f'{vote}': votes}}
-            logger.info(f"Vote for {vote}", extra=properties)
+            r.incr(vote,1)
 
             # Get current values
             vote1 = r.get(button1).decode('utf-8')
+            properties = {'custom_dimensions': {'Cats Vote': vote1}}
+            # use logger object to log cat vote
+            logger.info('Cats Vote', extra=properties)
+
             vote2 = r.get(button2).decode('utf-8')
+            properties = {'custom_dimensions': {'Dogs Vote': vote2}}
+            # use logger object to log dog vote
+            logger.info('Dogs Vote', extra=properties)  
+
 
             # Return results
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
