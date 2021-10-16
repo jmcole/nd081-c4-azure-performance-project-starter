@@ -127,9 +127,9 @@ def index():
 
             event = vote + ' Vote'
 
-            properties = {'custom_dimensions': {event}}
-            # TODO: use logger object to log cat vote
-            logger.info(event, extra=properties)
+            #properties = {'custom_dimensions': {event}}
+            # TODO: use logger object to log vote
+            logger.info(event)
 
             vote1 = r.get(button1).decode('utf-8')
             vote2 = r.get(button2).decode('utf-8')
