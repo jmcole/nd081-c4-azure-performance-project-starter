@@ -127,7 +127,7 @@ def index():
 
             event = vote + ' Vote'
 
-            properties = {'custom_dimensions': {'Cats Vote': event}}
+            properties = {'custom_dimensions': {event}}
             # TODO: use logger object to log cat vote
             logger.info(event, extra=properties)
 
