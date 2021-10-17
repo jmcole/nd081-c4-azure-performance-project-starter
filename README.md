@@ -292,22 +292,22 @@ The script above will take a few minutes to create VMSS and related resources. O
       # Get the ACR login server name
       # To use the azure-vote-front container image with ACR, the image needs to be tagged with the login server address of your registry. 
       # Find the login server address of your registry
-      az acr show --name myacr202106 --query loginServer --output table
-      # Associate a tag to the local image. You can use a different tag (say v2, v3, v4, ....) everytime you edit the underlying image. 
-      docker tag azure-vote-front:v1 myacr202106.azurecr.io/azure-vote-front:v1
+      az acr show --name myacr202106jmc --query loginServer --output table
+      # Associate a tag to the local image. You can use a different tag (say v2, v3, v4, ....) everytime you edit the underlying image. myacr202106jmc.azurecr.io
+      docker tag azure-vote-front:v1 myacr202106jmc.azurecr.io/azure-vote-front:v1
       # Now you will see myacr202106.azurecr.io/azure-vote-front:v1 if you run docker images
       # Push the local registry to remote ACR
-      docker push myacr202106.azurecr.io/azure-vote-front:v1
+      docker push myacr202106jmc.azurecr.io/azure-vote-front:v1
       # Verify if you image is up in the cloud.
-      az acr repository list --name myacr202106 --output table
+      az acr repository list --name myacr202106jmc --output table
       # Associate the AKS cluster with the ACR repository
-      az aks update -n udacity-cluster -g acdnd-c4-project --attach-acr myacr202106
+      az aks update -n udacity-cluster -g acdnd-c4-project --attach-acr myacr202106jmc
       ```
 
 7. Now, deploy the images to the AKS cluster:
       ```bash
       # Get the ACR login server name
-      az acr show --name myacr202106 --query loginServer --output table
+      az acr show --name myacr202106jmc --query loginServer --output table
       # Make sure that the manifest file *azure-vote-all-in-one-redis.yaml*, has `myacr202106.azurecr.io/azure-vote-front:v1` as the image path.  
       # Deploy the application. Run the command below from the parent directory where the *azure-vote-all-in-one-redis.yaml* file is present. 
       kubectl apply -f azure-vote-all-in-one-redis.yaml
